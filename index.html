@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime x Hub - Watch Anime Free</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🎬</span>
+                <span class="logo-text">Anime x Hub</span>
+            </div>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search anime... (e.g., naruto, one piece, demon slayer)" class="search-input">
+                <button onclick="searchAnime()" class="search-btn">🔍 Search</button>
+            </div>
+            <div class="nav-links">
+                <a href="#" onclick="loadHome()">🏠 Home</a>
+                <a href="#" onclick="loadTrending()">🔥 Trending</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Stream Your Favorite Anime</h1>
+        <p>Watch thousands of anime episodes in HD quality, completely free</p>
+    </div>
+
+    <div class="container">
+        <div id="content" class="anime-grid"></div>
+    </div>
+
+    <div id="episodeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <div id="videoModal" class="modal">
+        <div class="modal-content video-modal">
+            <span class="close" onclick="closeVideoModal()">&times;</span>
+            <div id="videoBody"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
