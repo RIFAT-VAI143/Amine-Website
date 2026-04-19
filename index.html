@@ -1,59 +1,652 @@
-<!-- ================= FILE: index.html ================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anime X Hub</title>
-  <link rel="manifest" href="/manifest.json">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0a0c10; color: #f0f3f8; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; line-height: 1.5; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #1e1f24; }
-    ::-webkit-scrollbar-thumb { background: #ff5e7c; border-radius: 12px; }
-    .app-container { max-width: 1600px; margin: 0 auto; padding: 0 20px 40px; }
-    .header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 20px; padding: 24px 0 16px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 28px; }
-    .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #ff8a5c, #ff3b6f); background-clip: text; -webkit-background-clip: text; color: transparent; letter-spacing: -0.5px; cursor: pointer; }
-    .search-wrapper { flex: 1; max-width: 480px; min-width: 240px; }
-    .search-input { width: 100%; padding: 12px 20px; background: #14161c; border: 1px solid #2c2f38; border-radius: 60px; color: white; font-size: 1rem; outline: none; transition: 0.2s; }
-    .search-input:focus { border-color: #ff5e7c; box-shadow: 0 0 0 2px rgba(255,94,124,0.2); }
-    .hero-section { margin-bottom: 48px; border-radius: 32px; overflow: hidden; background: #101218; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.6); }
-    .hero-bg { background-size: cover; background-position: top 20% center; min-height: 460px; display: flex; align-items: flex-end; position: relative; }
-    .hero-overlay { background: linear-gradient(0deg, #0a0c10 0%, rgba(10,12,16,0.6) 80%, transparent); width: 100%; padding: 30px 36px 36px; }
-    .hero-title { font-size: 2.6rem; font-weight: 800; margin-bottom: 12px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-    .hero-info { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 12px; }
-    .hero-detail { background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); padding: 6px 14px; border-radius: 40px; font-size: 0.85rem; font-weight: 500; }
-    .hero-synopsis { max-width: 700px; margin-top: 18px; font-size: 0.95rem; opacity: 0.9; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .btn-watch { margin-top: 24px; background: #ff3b6f; border: none; padding: 10px 26px; border-radius: 40px; font-weight: bold; color: white; font-size: 1rem; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-watch:hover { background: #ff5e7c; transform: scale(1.02); }
-    .row { margin-bottom: 48px; }
-    .row-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; padding: 0 4px; }
-    .row-title { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.3px; }
-    .row-count { font-size: 0.85rem; color: #aaa; }
-    .scroll-x { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 12px; }
-    .card { min-width: 170px; width: 170px; background: #12151e; border-radius: 20px; overflow: hidden; transition: all 0.2s ease; cursor: pointer; }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 12px 20px rgba(0,0,0,0.4); }
-    .card-img { width: 100%; height: 220px; object-fit: cover; }
-    .card h3 { padding: 12px 10px; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
-    .modal-content { max-width: 1100px; width: 100%; background: #11131c; border-radius: 32px; overflow: hidden; box-shadow: 0 30px 40px rgba(0,0,0,0.6); animation: fadeUp 0.25s ease; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .modal-video { background: #000; width: 100%; aspect-ratio: 16/9; }
-    .modal-video iframe { width: 100%; height: 100%; border: none; }
-    .modal-info { padding: 24px 28px; }
-    .episodes-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; max-height: 240px; overflow-y: auto; padding: 8px 4px; }
-    .episode-btn { background: #23252f; border: none; padding: 8px 18px; border-radius: 40px; color: white; font-weight: 500; cursor: pointer; transition: 0.15s; }
-    .episode-btn.active { background: #ff3b6f; box-shadow: 0 0 8px #ff3b6f; }
-    .episode-btn:hover { background: #ff5e7c; }
-    .close-modal { position: absolute; top: 24px; right: 28px; background: rgba(0,0,0,0.6); border: none; color: white; font-size: 28px; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .loading { text-align: center; padding: 60px; font-size: 1.2rem; color: #aaa; }
-    .empty-msg { text-align: center; padding: 40px; color: #777; }
-    @media (max-width: 700px) { .hero-title { font-size: 1.8rem; } .hero-overlay { padding: 20px; } .card { min-width: 140px; width: 140px; } .card-img { height: 180px; } }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0c10;
+      color: #f0f3f8;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.5;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e1f24;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ff5e7c;
+      border-radius: 12px;
+    }
+
+    .app-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px 0 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 28px;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ff8a5c, #ff3b6f);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+      cursor: pointer;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      max-width: 480px;
+      min-width: 240px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 20px;
+      background: #14161c;
+      border: 1px solid #2c2f38;
+      border-radius: 60px;
+      color: white;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: #ff5e7c;
+      box-shadow: 0 0 0 2px rgba(255,94,124,0.2);
+    }
+
+    .hero-section {
+      margin-bottom: 48px;
+      border-radius: 32px;
+      overflow: hidden;
+      background: #101218;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.6);
+    }
+
+    .hero-bg {
+      background-size: cover;
+      background-position: top 20% center;
+      min-height: 460px;
+      display: flex;
+      align-items: flex-end;
+      position: relative;
+    }
+
+    .hero-overlay {
+      background: linear-gradient(0deg, #0a0c10 0%, rgba(10,12,16,0.6) 80%, transparent);
+      width: 100%;
+      padding: 30px 36px 36px;
+    }
+
+    .hero-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .hero-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 12px;
+    }
+
+    .hero-detail {
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .hero-synopsis {
+      max-width: 700px;
+      margin-top: 18px;
+      font-size: 0.95rem;
+      opacity: 0.9;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .btn-watch {
+      margin-top: 24px;
+      background: #ff3b6f;
+      border: none;
+      padding: 10px 26px;
+      border-radius: 40px;
+      font-weight: bold;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-watch:hover {
+      background: #ff5e7c;
+      transform: scale(1.02);
+    }
+
+    .row {
+      margin-bottom: 48px;
+    }
+
+    .row-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 18px;
+      padding: 0 4px;
+    }
+
+    .row-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    .row-count {
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+
+    .scroll-x {
+      display: flex;
+      gap: 18px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      padding-bottom: 12px;
+    }
+
+    .card {
+      min-width: 170px;
+      width: 170px;
+      background: #12151e;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.4);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      padding: 12px 10px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      max-width: 1100px;
+      width: 100%;
+      background: #11131c;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 30px 40px rgba(0,0,0,0.6);
+      animation: fadeUp 0.25s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-video {
+      background: #000;
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+
+    .modal-video iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .modal-info {
+      padding: 24px 28px;
+    }
+
+    .episodes-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+      max-height: 240px;
+      overflow-y: auto;
+      padding: 8px 4px;
+    }
+
+    .episode-btn {
+      background: #23252f;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 40px;
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .episode-btn.active {
+      background: #ff3b6f;
+      box-shadow: 0 0 8px #ff3b6f;
+    }
+
+    .episode-btn:hover {
+      background: #ff5e7c;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      background: rgba(0,0,0,0.6);
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px;
+      font-size: 1.2rem;
+      color: #aaa;
+    }
+
+    .empty-msg {
+      text-align: center;
+      padding: 40px;
+      color: #777;
+    }
+
+    @media (max-width: 700px) {
+      .hero-title {
+        font-size: 1.8rem;
+      }
+      .hero-overlay {
+        padding: 20px;
+      }
+      .card {
+        min-width: 140px;
+        width: 140px;
+      }
+      .card-img {
+        height: 180px;
+      }
+    }
   </style>
 </head>
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const API_BASE = "https://anime-api-27gm.onrender.com";
+    const API_KEY = "RIFATExE_ANIME143";
+
+    // API functions
+    async function searchAnime(q) {
+      const res = await fetch(`${API_BASE}/api/search?keyword=${encodeURIComponent(q)}`, {
+        headers: { "X-API-Key": API_KEY }
+      });
+      return res.json();
+    }
+
+    async function getAnime(slug) {
+      const res = await fetch(`${API_BASE}/api/anime/${slug}`, {
+        headers: { "X-API-Key": API_KEY }
+      });
+      return res.json();
+    }
+
+    async function getEpisodes(id) {
+      const res = await fetch(`${API_BASE}/api/episodes/${id}`, {
+        headers: { "X-API-Key": API_KEY }
+      });
+      return res.json();
+    }
+
+    async function getServers(token) {
+      const res = await fetch(`${API_BASE}/api/servers/${token}`, {
+        headers: { "X-API-Key": API_KEY }
+      });
+      return res.json();
+    }
+
+    async function getSource(id) {
+      const res = await fetch(`${API_BASE}/api/source/${id}`, {
+        headers: { "X-API-Key": API_KEY }
+      });
+      return res.json();
+    }
+
+    // Card Component
+    function Card({ anime, onClick }) {
+      const poster = anime.poster || anime.image || 'https://via.placeholder.com/170x220?text=No+Image';
+      const title = anime.title || 'Untitled';
+      
+      return React.createElement('div', { className: "card", onClick: () => onClick(anime) },
+        React.createElement('img', { className: "card-img", src: poster, alt: title }),
+        React.createElement('h3', null, title.length > 35 ? title.slice(0, 32) + '...' : title)
+      );
+    }
+
+    // Row Component
+    function Row({ title, items, onCardClick }) {
+      if (!items || items.length === 0) return null;
+      
+      return React.createElement('div', { className: "row" },
+        React.createElement('div', { className: "row-header" },
+          React.createElement('h2', { className: "row-title" }, title),
+          React.createElement('span', { className: "row-count" }, items.length, " titles")
+        ),
+        React.createElement('div', { className: "scroll-x" },
+          items.map((item, idx) => 
+            React.createElement(Card, { key: item.id || item.slug || idx, anime: item, onClick: onCardClick })
+          )
+        )
+      );
+    }
+
+    // Hero Component
+    function Hero({ anime, onWatch }) {
+      if (!anime) {
+        return React.createElement('div', { className: "hero-section", style: { background: '#101218', minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' } },
+          React.createElement('div', { style: { textAlign: 'center', opacity: 0.6 } }, '✨ Find your favorite anime ✨')
+        );
+      }
+
+      const posterUrl = anime.poster || anime.image || 'https://via.placeholder.com/800x400?text=Anime+X+Hub';
+      const title = anime.title || 'Anime';
+      const rating = anime.rating || 'N/A';
+      const year = anime.releaseDate || '—';
+      const synopsis = anime.synopsis || anime.description || 'No synopsis available.';
+
+      return React.createElement('div', { className: "hero-section" },
+        React.createElement('div', { className: "hero-bg", style: { backgroundImage: `url(${posterUrl})` } },
+          React.createElement('div', { className: "hero-overlay" },
+            React.createElement('h1', { className: "hero-title" }, title),
+            React.createElement('div', { className: "hero-info" },
+              React.createElement('span', { className: "hero-detail" }, '⭐ ', rating),
+              React.createElement('span', { className: "hero-detail" }, '📅 ', year),
+              React.createElement('span', { className: "hero-detail" }, '🎬 HD')
+            ),
+            React.createElement('p', { className: "hero-synopsis" }, synopsis),
+            React.createElement('button', { className: "btn-watch", onClick: () => onWatch(anime) }, '▶ WATCH NOW')
+          )
+        )
+      );
+    }
+
+    // Modal Component
+    function Modal({ anime, onClose }) {
+      const [episodes, setEpisodes] = React.useState([]);
+      const [selectedEpisode, setSelectedEpisode] = React.useState(null);
+      const [videoUrl, setVideoUrl] = React.useState('');
+      const [loading, setLoading] = React.useState(true);
+      const [epLoading, setEpLoading] = React.useState(false);
+
+      React.useEffect(() => {
+        async function fetchDetails() {
+          setLoading(true);
+          try {
+            const slug = anime.slug;
+            if (slug) {
+              const details = await getAnime(slug);
+              const animeId = details.id || anime.id;
+              if (animeId) {
+                const epsData = await getEpisodes(animeId);
+                const episodesList = epsData.episodes || epsData || [];
+                setEpisodes(episodesList);
+                if (episodesList.length > 0) {
+                  setSelectedEpisode(episodesList[0]);
+                }
+              }
+            }
+          } catch (err) {
+            console.error("Modal fetch error", err);
+          } finally {
+            setLoading(false);
+          }
+        }
+        fetchDetails();
+      }, [anime]);
+
+      React.useEffect(() => {
+        if (!selectedEpisode) return;
+        async function loadVideo() {
+          setEpLoading(true);
+          setVideoUrl('');
+          try {
+            const token = selectedEpisode.token || selectedEpisode.id;
+            if (!token) return;
+            const serversData = await getServers(token);
+            let serverList = serversData.servers || serversData;
+            if (serverList && serverList.length) {
+              const firstServer = serverList[0];
+              const serverToken = firstServer.token || firstServer.id;
+              if (serverToken) {
+                const sourceData = await getSource(serverToken);
+                const embedUrl = sourceData.source || sourceData.url || sourceData.embed;
+                if (embedUrl) {
+                  let finalUrl = embedUrl;
+                  if (!embedUrl.startsWith('http')) finalUrl = 'https:' + embedUrl;
+                  setVideoUrl(finalUrl);
+                }
+              }
+            }
+          } catch (err) {
+            console.error("video source error", err);
+          } finally {
+            setEpLoading(false);
+          }
+        }
+        loadVideo();
+      }, [selectedEpisode]);
+
+      const title = anime.title;
+
+      return React.createElement('div', { className: "modal", onClick: onClose },
+        React.createElement('div', { className: "modal-content", onClick: (e) => e.stopPropagation() },
+          React.createElement('button', { className: "close-modal", onClick: onClose }, '✕'),
+          React.createElement('div', { className: "modal-video" },
+            epLoading ? 
+              React.createElement('div', { style: { width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#000' } },
+                React.createElement('span', { style: { color: '#ff8a5c' } }, '⚡ loading stream...')
+              ) :
+              videoUrl ?
+                React.createElement('iframe', { src: videoUrl, allowFullScreen: true, title: "anime-player" }) :
+                React.createElement('div', { style: { width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0c10', color: '#aaa' } },
+                  '🎬 No stream available for this episode'
+                )
+          ),
+          React.createElement('div', { className: "modal-info" },
+            React.createElement('h2', { style: { fontSize: '1.8rem', marginBottom: '8px' } }, title),
+            React.createElement('div', null,
+              React.createElement('strong', { style: { color: '#ff8a5c' } }, '📺 EPISODES'),
+              React.createElement('div', { className: "episodes-list" },
+                loading ?
+                  React.createElement('div', { className: "loading" }, 'Loading episodes...') :
+                  episodes.length === 0 ?
+                    React.createElement('div', { className: "empty-msg" }, 'No episodes found') :
+                    episodes.map((ep, idx) =>
+                      React.createElement('button', {
+                        key: ep.id || idx,
+                        className: `episode-btn ${selectedEpisode?.id === ep.id || selectedEpisode?.number === ep.number ? 'active' : ''}`,
+                        onClick: () => setSelectedEpisode(ep)
+                      }, ep.number ? `Ep ${ep.number}` : ep.title ? ep.title : `Episode ${idx + 1}`)
+                    )
+              )
+            )
+          )
+        )
+      );
+    }
+
+    // Search Component
+    function Search({ onSearchResults }) {
+      const [query, setQuery] = React.useState('');
+      const [loading, setLoading] = React.useState(false);
+
+      const handleChange = async (e) => {
+        const val = e.target.value;
+        setQuery(val);
+        
+        if (val.length < 2) {
+          onSearchResults([], null);
+          return;
+        }
+
+        setLoading(true);
+        try {
+          const res = await searchAnime(val);
+          const results = res.results || [];
+          onSearchResults(results, results[0] || null);
+        } catch (err) {
+          console.error(err);
+          onSearchResults([], null);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      return React.createElement('div', { className: "search-wrapper" },
+        React.createElement('input', {
+          type: "text",
+          className: "search-input",
+          placeholder: "Search anime... (Naruto, One Piece, Jujutsu Kaisen)",
+          value: query,
+          onChange: handleChange
+        }),
+        loading && React.createElement('div', { style: { fontSize: '12px', marginTop: '6px', color: '#ff8a5c' } }, 'searching...')
+      );
+    }
+
+    // Main App Component
+    function App() {
+      const [searchResults, setSearchResults] = React.useState([]);
+      const [heroAnime, setHeroAnime] = React.useState(null);
+      const [selectedAnime, setSelectedAnime] = React.useState(null);
+      const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+      React.useEffect(() => {
+        const loadDefault = async () => {
+          const res = await searchAnime('naruto');
+          if (res.results && res.results.length) {
+            setSearchResults(res.results);
+            setHeroAnime(res.results[0]);
+          }
+        };
+        loadDefault();
+      }, []);
+
+      const handleSearchResults = (results, firstItem) => {
+        setSearchResults(results);
+        setHeroAnime(firstItem);
+      };
+
+      const openAnimeModal = (anime) => {
+        setSelectedAnime(anime);
+        setIsModalOpen(true);
+      };
+
+      const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedAnime(null);
+      };
+
+      return React.createElement('div', { className: "app-container" },
+        React.createElement('div', { className: "header" },
+          React.createElement('div', { className: "logo", onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) }, '✦ ANIME X HUB'),
+          React.createElement(Search, { onSearchResults: handleSearchResults })
+        ),
+        React.createElement(Hero, { anime: heroAnime, onWatch: openAnimeModal }),
+        searchResults.length > 0 && React.createElement(Row, { title: "🔥 DISCOVERIES", items: searchResults, onCardClick: openAnimeModal }),
+        isModalOpen && selectedAnime && React.createElement(Modal, { anime: selectedAnime, onClose: closeModal })
+      );
+    }
+
+    // Render the app
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(App));
+  </script>
 </body>
 </html>
