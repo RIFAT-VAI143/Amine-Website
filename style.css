@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     color: #fff;
     min-height: 100vh;
@@ -103,6 +103,7 @@ body {
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s;
+    cursor: pointer;
 }
 
 .nav-links a:hover {
@@ -118,6 +119,9 @@ body {
 .hero h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .hero p {
@@ -203,6 +207,7 @@ body {
     text-align: center;
     padding: 4rem;
     font-size: 1.5rem;
+    grid-column: 1 / -1;
 }
 
 .loading::after {
@@ -299,6 +304,7 @@ body {
 
 .server-btn:hover {
     background: #4ecdc4;
+    transform: translateY(-2px);
 }
 
 .video-container {
