@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime x Hub - Watch Anime Free</title>
+    <title>Anime X Hub - Stream Anime Free</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
                 <span class="logo-icon">🎬</span>
-                <span class="logo-text">Anime x Hub</span>
+                <span class="logo-text">Anime X Hub</span>
             </div>
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search anime... (e.g., naruto, one piece, demon slayer)" class="search-input">
+                <input type="text" id="searchInput" placeholder="Search anime... (naruto, one piece, demon slayer)" class="search-input">
                 <button onclick="searchAnime()" class="search-btn">🔍 Search</button>
             </div>
             <div class="nav-links">
@@ -26,12 +25,14 @@
     </nav>
 
     <div class="hero">
-        <h1>Stream Your Favorite Anime</h1>
+        <h1>Anime X Hub</h1>
         <p>Watch thousands of anime episodes in HD quality, completely free</p>
     </div>
 
     <div class="container">
-        <div id="content" class="anime-grid"></div>
+        <div id="content" class="anime-grid">
+            <div class="loading">Loading Anime X Hub...</div>
+        </div>
     </div>
 
     <div id="episodeModal" class="modal">
